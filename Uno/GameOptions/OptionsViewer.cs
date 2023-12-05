@@ -5,14 +5,15 @@ namespace Uno;
 
 public static class OptionsViewer
 {
-    public static Response ShowOptions(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
+    public static Response ShowOptions(Response response, string gameKey, int idPlayer, 
+    Dictionary<string, Game> _games)
     {
         bool GameExists = SeeIfGameExists(gameKey, _games);
         if (GameExists)
         {
             SeeIfPlayerIsCurrentPlayer(response, gameKey, idPlayer, _games);
         }
-        WriteResponse(response, gameKey, idPlayer, _games);
+        WriteResponse(response, gameKey, _games);
         return response;
     }
 
@@ -21,12 +22,13 @@ public static class OptionsViewer
         return _games.ContainsKey(gameKey);
     }
 
-    private static void SeeIfPlayerIsCurrentPlayer(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
+    private static void SeeIfPlayerIsCurrentPlayer(Response response, string gameKey, int idPlayer, 
+    Dictionary<string, Game> _games)
     {
         response.Options = _games[gameKey].GetOptionsForCurrentPlayer(idPlayer);
     }
 
-    private static void WriteResponse(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
+    private static void WriteResponse(Response response, string gameKey, Dictionary<string, Game> _games)
     {
         if (!SeeIfGameExists(gameKey, _games))
         {

@@ -13,7 +13,7 @@ public static class PlayCard
         {
             SeeIfPlayIsOk(response, gameKey, idPlayer, selectedPlay, _games);
         }
-        WriteResponse(response, gameKey, idPlayer, selectedPlay, _games);
+        WriteResponse(response, gameKey, _games);
         return response;
     }
 
@@ -34,7 +34,7 @@ public static class PlayCard
         return true;
     }
 
-    private static void WriteResponse(Response response, string gameKey, int idPlayer, int selectedPlay, 
+    private static void WriteResponse(Response response, string gameKey, 
     Dictionary<string, Game> _games)
     {
         if (!SeeIfGameExists(gameKey, _games))
