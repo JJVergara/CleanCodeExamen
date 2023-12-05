@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Net.Cache;
 
 namespace Uno;
 
@@ -41,21 +42,41 @@ public class Controller
     /// <returns>
     /// A <c>Response</c> object containing the requested data.
     /// </returns>
+    /// 
     public Response DoTheThing(string request, string gameKey, int numPlayers, int[] shuffles, int idPlayer,
         int selectedPlay)
     {
         Response response = new Response();
         
-        if (request == "New game")
+        switch (request)
         {
-            /*
-             * Para crear un juego nuevo, se deben cumplir 4 condiciones:
-             *  1. No existe otro juego con el mismo nombre.
-             *  2. El número de jugadores es entre 2 y 10.
-             *  3. El mazo es revuelto al menos una vez (i.e., shuffles.Length > 0).
-             *  4. Cada revoltura debe usar entre 2 y 12 grupos de cartas (i.e., 1 < shuffles[i] < 13).
-             */
-            if (_games.ContainsKey(gameKey))
+            case "New game":
+                CreateNewGame(response, request, gameKey, numPlayers, shuffles, idPlayer, selectedPlay);
+                break;
+            case "Get game info":
+                ShowGameInfo(response, gameKey);
+                break;
+            case "Show options":
+                ShowOptions(response, gameKey, idPlayer);
+                break;
+            case "Play":
+                Play(response, gameKey, idPlayer, selectedPlay);
+                break;
+        }
+        return response;
+    }
+
+    public void CreateNewGame(Response response, string request, string gameKey, int numPlayers, int[] shuffles, int idPlayer,
+        int selectedPlay)
+    {
+        /*
+        * Para crear un juego nuevo, se deben cumplir 4 condiciones:
+        *  1. No existe otro juego con el mismo nombre.
+        *  2. El número de jugadores es entre 2 y 10.
+        *  3. El mazo es revuelto al menos una vez (i.e., shuffles.Length > 0).
+        *  4. Cada revoltura debe usar entre 2 y 12 grupos de cartas (i.e., 1 < shuffles[i] < 13).
+        */
+        if (_games.ContainsKey(gameKey))
             {
                 response.WasRequestSuccessful = false;
                 response.ErrorMessage = "This game already exists.";
@@ -80,14 +101,15 @@ public class Controller
                 {
                     _games[gameKey] = new Game(numPlayers, shuffles);
                 }
-            }
-        }
-        if (request == "Get game info")
-        {
-            /*
-             * Para obtener la información de un juego actual la única condición es que ese juego exista.
-             */
-            if (!_games.ContainsKey(gameKey))
+            };
+    }
+
+    public void ShowGameInfo(Response response, string gameKey)
+    {
+        /*
+        * Para obtener la información de un juego actual la única condición es que ese juego exista.
+        */
+        if (!_games.ContainsKey(gameKey))
             {
                 response.WasRequestSuccessful = false;
                 response.ErrorMessage = "This game does not exist.";
@@ -97,22 +119,22 @@ public class Controller
                 GameInfo info = _games[gameKey].GetGameInfo();
                 response.GameInfo = info;
             }
+    }
 
-        }
-        if (request == "Show options")
-        {
-            /*
-             * Acá mostramos las opciones de jugadas que puede realizar el jugador actual.
-             * Existen dos tipos de jugadas. Normalmente, el jugador actual debe elegir
-             * la siguiente carta a jugar. En ese caso las opciones consisten en elegir una
-             * de las cartas que tiene en la mano. El otro caso es cuando el jugador debe
-             * elegir un color. Este caso se da cuando la última carta jugada es un Wild.
-             *
-             * Además existen dos casos de error. El primero es cuando el juego no existe.
-             * El segundo es cuando el jugador que hizo el request NO es el jugador que
-             * tiene el turno actual.
-             */
-            if (!_games.ContainsKey(gameKey))
+    public void ShowOptions(Response response, string gameKey, int idPlayer)
+    {
+        /*
+        * Acá mostramos las opciones de jugadas que puede realizar el jugador actual.
+        * Existen dos tipos de jugadas. Normalmente, el jugador actual debe elegir
+        * la siguiente carta a jugar. En ese caso las opciones consisten en elegir una
+        * de las cartas que tiene en la mano. El otro caso es cuando el jugador debe
+        * elegir un color. Este caso se da cuando la última carta jugada es un Wild.
+        *
+        * Además existen dos casos de error. El primero es cuando el juego no existe.
+        * El segundo es cuando el jugador que hizo el request NO es el jugador que
+        * tiene el turno actual.
+        */
+        if (!_games.ContainsKey(gameKey))
             {
                 response.WasRequestSuccessful = false;
                 response.ErrorMessage = "This game does not exist.";
@@ -126,18 +148,19 @@ public class Controller
                     response.ErrorMessage = "You are not the current player.";
                 }
             }
-        }
+    }
 
-        if (request == "Play")
-        {
-            /*
-             * Acá es cuando se realiza una jugada (que puede ser intentar jugar una carta o elegir un color).
-             * Existen varios casos de error, comenzando porque no exista el juego.
-             * El resto de los casos de error incluyen que el jugador que hizo el request no sea el jugador que
-             * tiene el turno, que haya elegido una jugada inválida, etc.
-             * ... pero si la jugada fue exitosa se retorna "ok"
-             */
-            if (!_games.ContainsKey(gameKey))
+    public void Play(Response response, string gameKey, int idPlayer,
+        int selectedPlay)
+    {
+        /*
+        * Acá es cuando se realiza una jugada (que puede ser intentar jugar una carta o elegir un color).
+        * Existen varios casos de error, comenzando porque no exista el juego.
+        * El resto de los casos de error incluyen que el jugador que hizo el request no sea el jugador que
+        * tiene el turno, que haya elegido una jugada inválida, etc.
+        * ... pero si la jugada fue exitosa se retorna "ok"
+        */
+        if (!_games.ContainsKey(gameKey))
             {
                 response.WasRequestSuccessful = false;
                 response.ErrorMessage = "This game does not exist.";
@@ -151,9 +174,8 @@ public class Controller
                     response.ErrorMessage = result;
                 }
             }
-
-        }
-
-        return response;
     }
+
+
+
 }
