@@ -11,8 +11,6 @@ public static class DeckBuilder
     
     public static Deck Build()
     {
-        // WARNING: Do not change the order in which the deck is created.
-        // Otherwise, the test cases will fail.
         _deck = new Deck();
         foreach (var color in Colors)
         foreach (var value in Values)

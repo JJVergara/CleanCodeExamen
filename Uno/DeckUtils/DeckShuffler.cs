@@ -13,8 +13,6 @@ public class DeckShuffler
 
     public Deck Shuffle(Deck deck)
     {
-        // Warning: Do not change the way in which the deck is shuffle.
-        // Otherwise, the test cases will fail.
         _deck = deck;
         foreach (int shuffle in _shuffles)
             Shuffle(shuffle);

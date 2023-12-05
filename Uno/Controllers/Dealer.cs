@@ -28,8 +28,6 @@ public class Dealer
 
     private void DealSevenCardsToEachPlayer()
     {
-        // WARNING: Do not change the order in which the cards are dealt.
-        // Otherwise, the test cases will fail.
         for (int j = 0; j < 7; j++)
         for (int i = 0; i < _gameState.NumOfPlayers; i++)
             _gameState.Players[i].GiveCard(_gameState.DrawPile.Draw());
@@ -65,5 +63,4 @@ public class Dealer
         Player currentPlayer = _gameState.CurrentPlayer;
         currentPlayer.GiveCard(_gameState.DrawPile.Draw());
     }
-    
 }
