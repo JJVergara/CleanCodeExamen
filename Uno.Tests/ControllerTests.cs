@@ -16,9 +16,9 @@ public class ControllerTests
         Response response =
             controller.ManageGameActions("New game", gameName, numOfPlayers, shuffles, 0, 0);
 
-        Assert.Null(response.ErrorMessage);
+        Assert.Equal("None", response.ErrorMessage);
         Assert.True(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
     
@@ -34,7 +34,7 @@ public class ControllerTests
 
         Assert.Equal("This game already exists.", response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
 
@@ -52,7 +52,7 @@ public class ControllerTests
 
         Assert.Equal("The number of players is invalid.", response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
     
@@ -70,7 +70,7 @@ public class ControllerTests
 
         Assert.Equal("Invalid shuffle.", response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
 
@@ -88,7 +88,7 @@ public class ControllerTests
 
         Assert.Equal("This game does not exist.", response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
 
@@ -109,7 +109,7 @@ public class ControllerTests
             controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 0, 0);
 
         Assert.True(response.WasRequestSuccessful);
-        Assert.Null(response.ErrorMessage);
+        Assert.Equal("None", response.ErrorMessage);
         Assert.False(response.GameInfo!.IsGameOver);
         Assert.Equal(expCard, response.GameInfo!.CurrentCard);
         Assert.Equal(expPlayer, (int)response.GameInfo!.CurrentPlayer);
@@ -144,7 +144,7 @@ public class ControllerTests
 
         Assert.Equal("You are not the current player.", response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
 
@@ -180,9 +180,9 @@ public class ControllerTests
         Response response =
             controller.ManageGameActions("Show options", gameName, numOfPlayers, shuffles, currentPlayer, 0);
 
-        Assert.Null(response.ErrorMessage);
+        Assert.Equal("None", response.ErrorMessage);
         Assert.True(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Equal(expOptions, response.Options);
     }
     
@@ -219,7 +219,8 @@ public class ControllerTests
 
         Assert.Equal(errorMessage, response.ErrorMessage);
         Assert.False(response.WasRequestSuccessful);
-        Assert.Null(response.GameInfo);
+        
+        Assert.Equal("None", response.GameInfo.CurrentCard);
         Assert.Null(response.Options);
     }
     
@@ -251,7 +252,7 @@ public class ControllerTests
             controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, currentPlayer, 0);
 
         Assert.True(response.WasRequestSuccessful);
-        Assert.Null(response.ErrorMessage);
+        Assert.Equal("None", response.ErrorMessage);
         Assert.True(response.GameInfo!.IsGameOver);
         Assert.Equal("green/2", response.GameInfo!.CurrentCard);
         Assert.Equal(2, (int)response.GameInfo!.CurrentPlayer);
@@ -302,7 +303,7 @@ public class ControllerTests
                 shuffles[i], currentPlayer[i], 0);
         
             Assert.True(response.WasRequestSuccessful);
-            Assert.Null(response.ErrorMessage);
+            Assert.Equal("None", response.ErrorMessage);
             Assert.False(response.GameInfo!.IsGameOver);
             Assert.Equal(expCurrentCard[i], response.GameInfo!.CurrentCard);
             Assert.Equal(expCurrentPlayer[i], (int)response.GameInfo!.CurrentPlayer);
