@@ -54,7 +54,7 @@ public class Controller
                 response = NewGameCreator.CreateNewGame(response, gameKey, numPlayers, shuffles, _games);
                 break;
             case "Get game info":
-                ShowGameInfo(response, gameKey);
+                response = InfoViewer.ViewInfo(response, gameKey, _games);
                 break;
             case "Show options":
                 ShowOptions(response, gameKey, idPlayer);
@@ -64,23 +64,6 @@ public class Controller
                 break;
         }
         return response;
-    }
-
-    public void ShowGameInfo(Response response, string gameKey)
-    {
-        /*
-        * Para obtener la información de un juego actual la única condición es que ese juego exista.
-        */
-        if (!_games.ContainsKey(gameKey))
-            {
-                response.WasRequestSuccessful = false;
-                response.ErrorMessage = "This game does not exist.";
-            }
-            else
-            {
-                GameInfo info = _games[gameKey].GetGameInfo();
-                response.GameInfo = info;
-            }
     }
 
     public void ShowOptions(Response response, string gameKey, int idPlayer)
