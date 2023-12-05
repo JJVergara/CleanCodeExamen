@@ -1,0 +1,44 @@
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/Uno
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/Uno.deps.json
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/Uno.runtimeconfig.json
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/Uno.dll
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/ref/Uno.dll
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/bin/Debug/net6.0/Uno.pdb
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.csproj.AssemblyReference.cache
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.GeneratedMSBuildEditorConfig.editorconfig
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.AssemblyInfoInputs.cache
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.AssemblyInfo.cs
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.csproj.CoreCompileInputs.cache
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.dll
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/ref/Uno.dll
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.pdb
+/home/rodrigo/Desktop/IIC2113/2023-2/Examen/Examen-2023-2/Uno/Uno/obj/Debug/net6.0/Uno.genruntimeconfig.cache
+C:\Users\Cristian\Downloads\Uno\Uno\bin\Debug\net6.0\Uno.exe
+C:\Users\Cristian\Downloads\Uno\Uno\bin\Debug\net6.0\Uno.deps.json
+C:\Users\Cristian\Downloads\Uno\Uno\bin\Debug\net6.0\Uno.runtimeconfig.json
+C:\Users\Cristian\Downloads\Uno\Uno\bin\Debug\net6.0\Uno.dll
+C:\Users\Cristian\Downloads\Uno\Uno\bin\Debug\net6.0\Uno.pdb
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.csproj.AssemblyReference.cache
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.AssemblyInfoInputs.cache
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.AssemblyInfo.cs
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.csproj.CoreCompileInputs.cache
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.dll
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\refint\Uno.dll
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.pdb
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\Uno.genruntimeconfig.cache
+C:\Users\Cristian\Downloads\Uno\Uno\obj\Debug\net6.0\ref\Uno.dll
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\bin\Debug\net6.0\Uno.exe
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\bin\Debug\net6.0\Uno.deps.json
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\bin\Debug\net6.0\Uno.runtimeconfig.json
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\bin\Debug\net6.0\Uno.dll
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\bin\Debug\net6.0\Uno.pdb
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.GeneratedMSBuildEditorConfig.editorconfig
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.AssemblyInfoInputs.cache
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.AssemblyInfo.cs
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.csproj.CoreCompileInputs.cache
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.dll
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\refint\Uno.dll
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.pdb
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\Uno.genruntimeconfig.cache
+D:\Universidad\10mo-Semestre\Diseño detallado de Software\Uno-2\Uno\Uno\obj\Debug\net6.0\ref\Uno.dll
