@@ -72,31 +72,32 @@ public class Game
         return numOfCardsInPlayersHands;
     }
 
-    public string Play(int playerId, int selectedPlay)
+    public string GetPlayStatus(int playerId, int selectedPlay)
     {
+        string status = "";
         if (GetIfPlayerIsWinner())
-            return "Someone already won this game.";
-
-        if (playerId != _turnController.GetCurrentPlayerId())
-            return "You are not the current player.";
-
-        if (_gameState.CurrentTarget.IsMulticolor() && SeeIfSelectedColorIsValid(selectedPlay))
+        {
+            status = "Someone already won this game.";
+        }
+        else if (playerId != _turnController.GetCurrentPlayerId())
+        {
+            status = "You are not the current player.";
+        }
+        else if (_gameState.CurrentTarget.IsMulticolor() && SeeIfSelectedColorIsValid(selectedPlay))
         {
             _gameState.CurrentTarget.SetColor(selectedPlay);
+            status = "Ok";
         }
-
         else if (_gameState.CurrentTarget.IsMulticolor() && !SeeIfSelectedColorIsValid(selectedPlay))
         {
-            return "Your color choice is invalid.";
+            status = "Your color choice is invalid.";
         }
-
-        else // Caso en que se juega una carta
+        else
         {
             string PlayStatus = ManageTurn(playerId, selectedPlay);
-            return PlayStatus;
+            status = PlayStatus;
         }
-
-        return "Ok";
+        return status;
     }
 
     public string ManageTurn(int playerId, int selectedPlay)
@@ -172,37 +173,21 @@ public class Game
     {
         _turnController.UpdatePlayerWhoSelectsColorIfNeeded();
         Value cardValue = _gameState.CurrentTarget.GetValue();
+        GameEffects gameEffects = new GameEffects(_gameState, _turnController, _dealer);
 
         switch (cardValue)
         {
             case Value.Reverse:
-                _turnController.ChangeDirection();
-                if (_gameState.NumOfPlayers == 2) // si hay dos jugadores, reverse funciona como skip
-                {
-                    _turnController.AdvanceTurn();
-                }
+                gameEffects.HandleReverseEffect();
                 break;
-
             case Value.Skip:
-             _turnController.AdvanceTurn();
-             break;
-
-            case Value.DrawTwo:
-                if (isFirstTurn)
-                {
-                    _dealer.GiveCardsToCurrentPlayer(2);
-                    _turnController.AdvanceTurn();
-                }
-                else
-                {
-                    _turnController.AdvanceTurn();
-                    _dealer.GiveCardsToCurrentPlayer(2);
-                }
+                gameEffects.HandleSkipEffect();
                 break;
-
+            case Value.DrawTwo:
+                gameEffects.HandleDrawTwoEffect(isFirstTurn);
+                break;
             case Value.WildDrawFour:
-                _turnController.AdvanceTurn();
-                _dealer.GiveCardsToCurrentPlayer(4);
+                gameEffects.HandleWildDrawFourEffect();
                 break;
         }
     }
