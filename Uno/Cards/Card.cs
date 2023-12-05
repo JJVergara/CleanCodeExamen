@@ -22,6 +22,9 @@ public class Card
 
     public bool Is(Value value)
         => _value == value;
+
+    public Value GetValue()
+        => _value;
     
     public bool DoTheyHaveTheSameColorOrValue(Card other)
         => other._color == _color || other._value == _value;

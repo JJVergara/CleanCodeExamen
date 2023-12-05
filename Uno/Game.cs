@@ -92,34 +92,51 @@ public class Game
 
         else // Caso en que se juega una carta
         {
-            if (selectedPlay < -1 || selectedPlay >= _gameState.Players[playerId].GetNumOfCardsInHand())
-                return "Your card choice is invalid.";
-
-            /*
-             * Si selectedPlay es "-1", entonce se pasa y se roba una carta.
-             * En otro caso se juega la carta seleccionada
-             */
-            int idPlay = selectedPlay;
-            if (idPlay != -1)
-            {
-                Card card = _gameState.CurrentPlayer.GetCard(idPlay);
-
-                // La jugada es válida si su color o valor son iguales a la última carta jugada
-                // También la jugada es válida si el color de la carta a jugar es "multicolor"
-                if (playIsValid(card))
-                {
-                    ManagePlayedCard(card, idPlay);
-                }
-                else
-                    return "You cannot play that card.";
-            }
-            else
-            {
-                ManageEndTurn();
-            }
+            string PlayStatus = ManageTurn(playerId, selectedPlay);
+            return PlayStatus;
         }
 
         return "Ok";
+    }
+
+    public string ManageTurn(int playerId, int selectedPlay)
+    {
+        bool cardChoiceIsInvalid = SeeIfCardChoiceIsInvalid(playerId, selectedPlay);
+        int idPlay = selectedPlay;
+        string status = "";
+
+        if (idPlay != -1 && !cardChoiceIsInvalid)
+        {
+            status = PlayCard(idPlay);
+        }
+        else if (cardChoiceIsInvalid)
+        {
+            status = "Your card choice is invalid.";
+        }
+        else
+        {
+            ManageEndTurn();
+        }
+        return status;
+    }
+
+    public string PlayCard(int idPlay)
+    {
+        string status = "";
+        Card card = _gameState.CurrentPlayer.GetCard(idPlay);
+        if (playIsValid(card))
+        {
+            ManagePlayedCard(card, idPlay);
+            status = "Ok";
+        }
+        else
+            status = "You cannot play that card.";
+        return status;
+    }
+
+    public bool SeeIfCardChoiceIsInvalid(int playerId, int selectedPlay)
+    {
+        return (selectedPlay < -1 || selectedPlay >= _gameState.Players[playerId].GetNumOfCardsInHand());
     }
 
     public bool playIsValid(Card card)
@@ -151,46 +168,42 @@ public class Game
         return true;
     }
 
-
     public void ApplyCardEffect(bool isFirstTurn)
     {
-        // Si la carta es multicolor, indicamos que el jugador actual debe elegir el color de la carta
         _turnController.UpdatePlayerWhoSelectsColorIfNeeded();
+        Value cardValue = _gameState.CurrentTarget.GetValue();
 
-        if (_gameState.CurrentTarget.Is(Value.Reverse))
+        switch (cardValue)
         {
-            _turnController.ChangeDirection();
-            if (_gameState.NumOfPlayers == 2) // si hay dos jugadores, reverse funciona como skip
+            case Value.Reverse:
+                _turnController.ChangeDirection();
+                if (_gameState.NumOfPlayers == 2) // si hay dos jugadores, reverse funciona como skip
+                {
+                    _turnController.AdvanceTurn();
+                }
+                break;
+
+            case Value.Skip:
+             _turnController.AdvanceTurn();
+             break;
+
+            case Value.DrawTwo:
+                if (isFirstTurn)
+                {
+                    _dealer.GiveCardsToCurrentPlayer(2);
+                    _turnController.AdvanceTurn();
+                }
+                else
+                {
+                    _turnController.AdvanceTurn();
+                    _dealer.GiveCardsToCurrentPlayer(2);
+                }
+                break;
+
+            case Value.WildDrawFour:
                 _turnController.AdvanceTurn();
-
-        }
-
-        if (_gameState.CurrentTarget.Is(Value.Skip))
-            _turnController.AdvanceTurn();
-
-        if (_gameState.CurrentTarget.Is(Value.DrawTwo))
-        {
-            if (isFirstTurn)
-            {
-                // Si es el primer turno, el jugador que parte roba dos cartas
-                _dealer.GiveCardsToCurrentPlayer(2);
-                // y luego juega el siguiente jugador
-                _turnController.AdvanceTurn();
-            }
-            else
-            {
-                // Si jugador actual jugó el +2, avanzamos
-                _turnController.AdvanceTurn();
-                // ... y hacemos que el siguiente jugador robe dos cartas
-                _dealer.GiveCardsToCurrentPlayer(2);
-            }
-
-        }
-
-        if (_gameState.CurrentTarget.Is(Value.WildDrawFour))
-        {
-            _turnController.AdvanceTurn();
-            _dealer.GiveCardsToCurrentPlayer(4);
+                _dealer.GiveCardsToCurrentPlayer(4);
+                break;
         }
     }
 }
