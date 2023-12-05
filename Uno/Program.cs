@@ -51,7 +51,7 @@ Response SendRequest(Controller controller, string request,
     int idPlayer, int selectedPlay)
 {
     Response response =
-        controller.DoTheThing(request, gameKey, numPlayers, shuffles, idPlayer, selectedPlay);
+        controller.ManageGameActions(request, gameKey, numPlayers, shuffles, idPlayer, selectedPlay);
 
     if(!response.WasRequestSuccessful)
         Console.WriteLine($"[ERROR] {response.ErrorMessage}");

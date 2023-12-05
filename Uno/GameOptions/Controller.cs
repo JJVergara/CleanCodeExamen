@@ -43,7 +43,7 @@ public class Controller
     /// A <c>Response</c> object containing the requested data.
     /// </returns>
     /// 
-    public Response DoTheThing(string request, string gameKey, int numPlayers, int[] shuffles, int idPlayer,
+    public Response ManageGameActions(string request, string gameKey, int numPlayers, int[] shuffles, int idPlayer,
         int selectedPlay)
     {
         Response response = new Response();
@@ -51,7 +51,7 @@ public class Controller
         switch (request)
         {
             case "New game":
-                CreateNewGame(response, request, gameKey, numPlayers, shuffles, idPlayer, selectedPlay);
+                response = NewGameCreator.CreateNewGame(response, gameKey, numPlayers, shuffles, _games);
                 break;
             case "Get game info":
                 ShowGameInfo(response, gameKey);
@@ -64,44 +64,6 @@ public class Controller
                 break;
         }
         return response;
-    }
-
-    public void CreateNewGame(Response response, string request, string gameKey, int numPlayers, int[] shuffles, int idPlayer,
-        int selectedPlay)
-    {
-        /*
-        * Para crear un juego nuevo, se deben cumplir 4 condiciones:
-        *  1. No existe otro juego con el mismo nombre.
-        *  2. El número de jugadores es entre 2 y 10.
-        *  3. El mazo es revuelto al menos una vez (i.e., shuffles.Length > 0).
-        *  4. Cada revoltura debe usar entre 2 y 12 grupos de cartas (i.e., 1 < shuffles[i] < 13).
-        */
-        if (_games.ContainsKey(gameKey))
-            {
-                response.WasRequestSuccessful = false;
-                response.ErrorMessage = "This game already exists.";
-            }
-            else if (numPlayers < 2 || numPlayers > 10)
-            {
-                response.WasRequestSuccessful = false;
-                response.ErrorMessage = "The number of players is invalid.";
-            }
-            else
-            {
-                bool isShuffleValid = shuffles.Length > 0;
-                foreach (var shuffle in shuffles)
-                    isShuffleValid = isShuffleValid && shuffle > 1 && shuffle < 13;
-
-                if (!isShuffleValid)
-                {
-                    response.WasRequestSuccessful = false;
-                    response.ErrorMessage = "Invalid shuffle.";
-                }
-                else
-                {
-                    _games[gameKey] = new Game(numPlayers, shuffles);
-                }
-            };
     }
 
     public void ShowGameInfo(Response response, string gameKey)
