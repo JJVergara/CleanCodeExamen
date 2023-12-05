@@ -149,22 +149,31 @@ public class ControllerTests
     }
 
     [Theory]
-    [InlineData(10, new[] { 2, 3, 5, 7 }, new int[] { 0, 1, 2, 3 }, new []{"Which card do you want to play? (enter -1 to pass)", "0- green/draw 2", "1- blue/1", "2- green/0", "3- yellow/3", "4- multicolor/wild draw 4", "5- yellow/7", "6- red/reverse"})]
-    [InlineData(10, new[] { 2, 3, 5, 7 }, new int[] { 0, 1, 2, 3, 4 }, new []{"Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green."})]
-    [InlineData(10, new[] { 3, 5, 7 }, new int[] { -1, 4, 0, -1, 3, 1, -1, -1, 2, 3, -1, -1, 0, -1, 7, -1, -1, 9, -1, 7, -1, -1, -1, -1, -1, 0, -1, 1, 0, 0, 10 }, new []{"Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green."})]
-    [InlineData(2, new[] { 3, 5, 7 }, new int[] { 6, 6, 4, 4, 2, 1, 0, 2, 0, 1, 1, 2, -1, 1, -1, 1, -1, 1, 1 }, new []{"Which card do you want to play? (enter -1 to pass)", "0- red/1"})]
-    public void ManageGameActions_ShowOptionsAfterSomePlays(int numOfPlayers, int[] shuffles, int[] plays, string[] expOptions)
+    [InlineData(10, new[] { 2, 3, 5, 7 }, new int[] { 0, 1, 2, 3 }, new []
+    {"Which card do you want to play? (enter -1 to pass)", "0- green/draw 2", "1- blue/1", "2- green/0", 
+    "3- yellow/3", "4- multicolor/wild draw 4", "5- yellow/7", "6- red/reverse"})]
+    [InlineData(10, new[] { 2, 3, 5, 7 }, new int[] { 0, 1, 2, 3, 4 }, new []
+    {"Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green."})]
+    [InlineData(10, new[] { 3, 5, 7 }, new int[] 
+    { -1, 4, 0, -1, 3, 1, -1, -1, 2, 3, -1, -1, 0, -1, 7, -1, -1, 9, -1, 7, -1, -1, -1, -1, -1, 0, -1, 1, 0, 0, 10 },
+     new []{"Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green."})]
+    [InlineData(2, new[] { 3, 5, 7 }, new int[] { 6, 6, 4, 4, 2, 1, 0, 2, 0, 1, 1, 2, -1, 1, -1, 1, -1, 1, 1 },
+     new []{"Which card do you want to play? (enter -1 to pass)", "0- red/1"})]
+    public void ManageGameActions_ShowOptionsAfterSomePlays(int numOfPlayers, int[] shuffles, 
+    int[] plays, string[] expOptions)
     {
         Controller controller = new Controller();
         string gameName = "My game";
         controller.ManageGameActions("New game", gameName, numOfPlayers, shuffles, 0, 0);
         int currentPlayer =
-            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 0, 0).GameInfo!.CurrentPlayer;
+            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, 
+            shuffles, 0, 0).GameInfo!.CurrentPlayer;
         foreach (var play in plays)
         {
             controller.ManageGameActions("Play", gameName, numOfPlayers, shuffles, currentPlayer, play);
             currentPlayer =
-                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, currentPlayer, play)
+                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 
+                currentPlayer, play)
                     .GameInfo!.CurrentPlayer;
         }
 
@@ -184,19 +193,24 @@ public class ControllerTests
     [InlineData(5, new[] { 5, 7 }, new int[] { }, -2, "Your card choice is invalid.")]
     [InlineData(5, new[] { 5, 7 }, new int[] { }, 8, "Your card choice is invalid.")]
     [InlineData(5, new[] { 5, 7 }, new int[] { }, 5, "You cannot play that card.")]
-    [InlineData(10, new[] { 3, 5, 7 }, new [] {5, 5, 5, 5, 3, 2, -1, -1, 0, 0, 1, 0, 0, 5, 5, -1, 4, 6, 2, 3, 2, 1, 2, 3, 5, 8, -1, -1, -1, 0, -1, -1, 1, 1, 5, 5, 5, -1, 2, 2, 1, 5, 4, 0, 1, 3, 0, 6, 5, 1, 1, 4, 3, -1, -1, -1, 0}, 0, "Someone already won this game.")]
-    public void ManageGameActions_PlayInvalidCards(int numOfPlayers, int[] shuffles, int[] plays, int lastPlay, string errorMessage)
+    [InlineData(10, new[] { 3, 5, 7 }, new [] 
+    {5, 5, 5, 5, 3, 2, -1, -1, 0, 0, 1, 0, 0, 5, 5, -1, 4, 6, 2, 3, 2, 1, 2, 3, 5, 8, -1, -1, -1, 0, -1, -1, 1, 
+    1, 5, 5, 5, -1, 2, 2, 1, 5, 4, 0, 1, 3, 0, 6, 5, 1, 1, 4, 3, -1, -1, -1, 0}, 0, "Someone already won this game.")]
+    public void ManageGameActions_PlayInvalidCards(int numOfPlayers, int[] shuffles, 
+    int[] plays, int lastPlay, string errorMessage)
     {
         Controller controller = new Controller();
         string gameName = "My game";
         controller.ManageGameActions("New game", gameName, numOfPlayers, shuffles, 0, 0);
         int currentPlayer =
-            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 0, 0).GameInfo!.CurrentPlayer;
+            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 
+            0, 0).GameInfo!.CurrentPlayer;
         foreach (var play in plays)
         {
             controller.ManageGameActions("Play", gameName, numOfPlayers, shuffles, currentPlayer, play);
             currentPlayer =
-                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, currentPlayer, play)
+                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 
+                currentPlayer, play)
                     .GameInfo!.CurrentPlayer;
         }
 
@@ -223,13 +237,14 @@ public class ControllerTests
         string gameName = "My game";
         controller.ManageGameActions("New game", gameName, numOfPlayers, shuffles, 0, 0);
         int currentPlayer =
-            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 0, 0).GameInfo!.CurrentPlayer;
+            (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 0, 
+            0).GameInfo!.CurrentPlayer;
         foreach (var play in plays)
         {
             controller.ManageGameActions("Play", gameName, numOfPlayers, shuffles, currentPlayer, play);
             currentPlayer =
-                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, currentPlayer, play)
-                    .GameInfo!.CurrentPlayer;
+                (int)controller.ManageGameActions("Get game info", gameName, numOfPlayers, shuffles, 
+                currentPlayer, play).GameInfo!.CurrentPlayer;
         }
 
         Response response =
@@ -266,23 +281,25 @@ public class ControllerTests
         {
             controller.ManageGameActions("New game", gameNames[i], numPlayers[i], shuffles[i], 0, 0);
             currentPlayer[i] =
-                (int)controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], shuffles[i], 0, 0).GameInfo!
-                    .CurrentPlayer;
+                (int)controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], shuffles[i], 0, 
+                0).GameInfo!.CurrentPlayer;
         }
         for (int j = 0; j < 11; j++)
         {
             for (int i = 0; i < 3; i++)
             {
-                controller.ManageGameActions("Play", gameNames[i], numPlayers[i], shuffles[i], currentPlayer[i], plays[i][j]);
-                currentPlayer[i] = (int)controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], shuffles[i],
-                    currentPlayer[i], plays[i][j]).GameInfo!.CurrentPlayer;
+                controller.ManageGameActions("Play", gameNames[i], numPlayers[i], shuffles[i], currentPlayer[i], 
+                plays[i][j]);
+                currentPlayer[i] = (int)controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], 
+                shuffles[i],currentPlayer[i], plays[i][j]).GameInfo!.CurrentPlayer;
             }
         }
 
         for(int i = 0; i < 3; i++)
         {
             Response response =
-                controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], shuffles[i], currentPlayer[i], 0);
+                controller.ManageGameActions("Get game info", gameNames[i], numPlayers[i], 
+                shuffles[i], currentPlayer[i], 0);
         
             Assert.True(response.WasRequestSuccessful);
             Assert.Null(response.ErrorMessage);

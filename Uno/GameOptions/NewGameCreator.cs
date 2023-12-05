@@ -2,7 +2,8 @@ namespace Uno;
 
 public static class NewGameCreator
 {
-    public static Response CreateNewGame(Response response, string gameKey, int numPlayers, int[] shuffles, Dictionary<string, Game> _games)
+    public static Response CreateNewGame(Response response, string gameKey, int numPlayers, 
+    int[] shuffles, Dictionary<string, Game> _games)
     {
         bool GameExists = SeeIfGameExists(gameKey, _games);
         bool IsValidNumberOfPlayers = SeeIfThereIsValidNumberOfPlayers(numPlayers);

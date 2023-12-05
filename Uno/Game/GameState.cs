@@ -12,7 +12,6 @@ public class GameState
     public int Direction = 1;
     public int CurrentPlayerId = 0;
     public int PlayerWhoSelectsNextColor = 0;
-
     public int NumOfPlayers => Players.Count;
     public Player CurrentPlayer => Players[CurrentPlayerId];
 

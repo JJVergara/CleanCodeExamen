@@ -22,7 +22,8 @@ public static class PlayCard
         return _games.ContainsKey(gameKey);
     }
 
-    private static bool SeeIfPlayIsOk(Response response, string gameKey, int idPlayer, int selectedPlay, Dictionary<string, Game> _games)
+    private static bool SeeIfPlayIsOk(Response response, string gameKey, int idPlayer, int selectedPlay, 
+    Dictionary<string, Game> _games)
     {
         string result = _games[gameKey].GetPlayStatus(idPlayer, selectedPlay);
         if (result != "Ok")

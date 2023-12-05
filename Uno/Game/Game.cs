@@ -5,11 +5,8 @@ namespace Uno;
 
 public class Game
 {
-    // El _gameState es una estructura de datos que contiene todos los parámetros que controlan el juego
     private GameState _gameState;
-    // El _turnController nos permite cambiar el turno y ajustar le dirección en que avanzamos
     private TurnController _turnController;
-    // El _dealer es un controller que crea el mazo, revuelve el mazo y reparte cartas
     private Dealer _dealer;
     
     public Game(int numPlayers, int[] shuffles)
@@ -19,9 +16,8 @@ public class Game
         _dealer = new Dealer(_gameState, shuffles);
         _dealer.DealInitialHand(numPlayers);
         _dealer.PutFirstCardOnDiscardPile();
-        
-        // aplicamos el efecto de la carta recién jugada (de tener alguno)
-        ApplyCardEffect(true);
+        PlayedCardHandler playedCardHandler = new PlayedCardHandler(_gameState, _turnController, _dealer);
+        playedCardHandler.ApplyCardEffect(true);
 
     }
 
@@ -35,25 +31,41 @@ public class Game
     
     public string[]? GetOptionsForCurrentPlayer(int playerId)
     {
-        List<string> options = new List<string>();
         if (playerId != _turnController.GetCurrentPlayerId())
-            return null; // caso de error, el jugador que hizo el request no le toca jugar
-
-        // Si el color buscado es multicolor, entonces las opciones a mostrar son los colores posibles a elegir.
+            return null;
+        string[] options = GetPlayerOptionsForTurn();
+        return options;
+    }
+    
+    public string[] GetPlayerOptionsForTurn()
+    {
+        List<string> options = new List<string>();
         if (_gameState.CurrentTarget.IsMulticolor())
         {
-            options.Add("Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green.");
+            options = AddColorSelectionOption(options);
         }
-        else // en otro caso, se muestran las cartas que el jugador tiene en su mano
+        else
         {
-            Player player = _gameState.CurrentPlayer;
-            options.Add("Which card do you want to play? (enter -1 to pass)");
-            for (int i = 0; i < player.GetNumOfCardsInHand(); i++)
-                options.Add($"{i}- {player.GetCard(i)}");
+            options = AddCardSelectionOption(options);
         }
         return options.ToArray();
     }
-    
+
+    public List<string> AddColorSelectionOption(List<string> options)
+    {
+        options.Add("Select a color: 0- Red, 1- Blue, 2- Yellow, 3- Green.");
+        return options;
+    }
+
+    public List<string> AddCardSelectionOption(List<string> options)
+    {
+        Player player = _gameState.CurrentPlayer;
+        options.Add("Which card do you want to play? (enter -1 to pass)");
+        for (int i = 0; i < player.GetNumOfCardsInHand(); i++)
+            options.Add($"{i}- {player.GetCard(i)}");
+        return options;
+    }
+
     public GameInfo GetGameInfo()
     {
         bool isGameOver = GetIfPlayerIsWinner(); 
@@ -105,10 +117,11 @@ public class Game
         bool cardChoiceIsInvalid = SeeIfCardChoiceIsInvalid(playerId, selectedPlay);
         int idPlay = selectedPlay;
         string status = "";
+        PlayedCardHandler playedCardHandler = new PlayedCardHandler(_gameState, _turnController, _dealer);
 
         if (idPlay != -1 && !cardChoiceIsInvalid)
         {
-            status = PlayCard(idPlay);
+            status = playedCardHandler.PlayCard(idPlay);
         }
         else if (cardChoiceIsInvalid)
         {
@@ -121,38 +134,11 @@ public class Game
         return status;
     }
 
-    public string PlayCard(int idPlay)
-    {
-        string status = "";
-        Card card = _gameState.CurrentPlayer.GetCard(idPlay);
-        if (playIsValid(card))
-        {
-            ManagePlayedCard(card, idPlay);
-            status = "Ok";
-        }
-        else
-            status = "You cannot play that card.";
-        return status;
-    }
-
     public bool SeeIfCardChoiceIsInvalid(int playerId, int selectedPlay)
     {
         return (selectedPlay < -1 || selectedPlay >= _gameState.Players[playerId].GetNumOfCardsInHand());
     }
 
-    public bool playIsValid(Card card)
-    {
-        return (_gameState.CurrentTarget.DoTheyHaveTheSameColorOrValue(card) || card.IsMulticolor());
-    }
-
-    public void ManagePlayedCard(Card card, int idPlay)
-    {
-        _gameState.CurrentPlayer.TakeCard(idPlay);
-        _gameState.DiscardPile.Add(card);
-        _gameState.CurrentTarget = card.Clone();
-        ApplyCardEffect(false);
-        _turnController.AdvanceTurn();
-    }
     public void ManageEndTurn()
     {
         _dealer.GiveCardToCurrentPlayer();
@@ -167,28 +153,5 @@ public class Game
         }
         _gameState.CurrentTarget.SetColor(selectedPlay);
         return true;
-    }
-
-    public void ApplyCardEffect(bool isFirstTurn)
-    {
-        _turnController.UpdatePlayerWhoSelectsColorIfNeeded();
-        Value cardValue = _gameState.CurrentTarget.GetValue();
-        GameEffects gameEffects = new GameEffects(_gameState, _turnController, _dealer);
-
-        switch (cardValue)
-        {
-            case Value.Reverse:
-                gameEffects.HandleReverseEffect();
-                break;
-            case Value.Skip:
-                gameEffects.HandleSkipEffect();
-                break;
-            case Value.DrawTwo:
-                gameEffects.HandleDrawTwoEffect(isFirstTurn);
-                break;
-            case Value.WildDrawFour:
-                gameEffects.HandleWildDrawFourEffect();
-                break;
-        }
     }
 }

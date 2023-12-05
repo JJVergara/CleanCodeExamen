@@ -1,6 +1,3 @@
-using Uno.Cards;
-using Uno.DeckUtils;
-using Uno.Cards;
 using Uno.Controllers;
 
 namespace Uno;
@@ -21,7 +18,7 @@ public class GameEffects
     public void HandleReverseEffect()
     {
         _turnController.ChangeDirection();
-        if (_gameState.NumOfPlayers == 2) // si hay dos jugadores, reverse funciona como skip
+        if (_gameState.NumOfPlayers == 2)
         {
             _turnController.AdvanceTurn();
         }
