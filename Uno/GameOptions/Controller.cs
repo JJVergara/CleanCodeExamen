@@ -57,7 +57,8 @@ public class Controller
                 response = InfoViewer.ViewInfo(response, gameKey, _games);
                 break;
             case "Show options":
-                ShowOptions(response, gameKey, idPlayer);
+                //ShowOptions(response, gameKey, idPlayer);
+                response = OptionsViewer.ShowOptions(response, gameKey, idPlayer, _games);
                 break;
             case "Play":
                 Play(response, gameKey, idPlayer, selectedPlay);
@@ -80,19 +81,19 @@ public class Controller
         * tiene el turno actual.
         */
         if (!_games.ContainsKey(gameKey))
+        {
+            response.WasRequestSuccessful = false;
+            response.ErrorMessage = "This game does not exist.";
+        }
+        else
+        {
+            response.Options = _games[gameKey].GetOptionsForCurrentPlayer(idPlayer);
+            if (response.Options == null)
             {
                 response.WasRequestSuccessful = false;
-                response.ErrorMessage = "This game does not exist.";
+                response.ErrorMessage = "You are not the current player.";
             }
-            else
-            {
-                response.Options = _games[gameKey].GetOptionsForCurrentPlayer(idPlayer);
-                if (response.Options == null)
-                {
-                    response.WasRequestSuccessful = false;
-                    response.ErrorMessage = "You are not the current player.";
-                }
-            }
+        }
     }
 
     public void Play(Response response, string gameKey, int idPlayer,

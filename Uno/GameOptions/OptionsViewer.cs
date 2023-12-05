@@ -5,15 +5,25 @@ namespace Uno;
 
 public static class OptionsViewer
 {
-    public static void ShowOptions(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
+    public static Response ShowOptions(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
     {
         bool GameExists = SeeIfGameExists(gameKey, _games);
-        bool IsCurrentPlayer = SeeIfPlayerIsCurrentPlayer(response, gameKey, idPlayer, _games);
-        if (GameExists && IsCurrentPlayer)
+        if (!GameExists)
         {
-            GameInfo info = _games[gameKey].GetGameInfo();
-            response.GameInfo = info;
+            
         }
+        else
+        {
+            //Volver a Esto
+            response.Options = _games[gameKey].GetOptionsForCurrentPlayer(idPlayer);
+            if (response.Options == null)
+            {
+                response.WasRequestSuccessful = false;
+                response.ErrorMessage = "You are not the current player.";
+            }
+        }
+        WriteResponse(response, gameKey, idPlayer, _games);
+        return response;
     }
 
     private static bool SeeIfGameExists(string gameKey, Dictionary<string, Game> _games)
@@ -31,24 +41,17 @@ public static class OptionsViewer
         return true;
     }
 
-    //No se usa pero por casualidad yo creo
-
-    // private static void WriteResponse(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
-    // {
-    //     if (!SeeIfGameExists(gameKey, _games))
-    //     {
-    //         response.WasRequestSuccessful = false;
-    //         response.ErrorMessage = "This game does not exist.";
-    //     }
-    //     else if (SeeIfPlayerIsCurrentPlayer(response, gameKey, idPlayer, _games))
-    //     {
-    //         response.WasRequestSuccessful = false;
-    //         response.ErrorMessage = "You are not the current player.";
-    //     }
-    //     else
-    //     {
-    //         GameInfo info = _games[gameKey].GetGameInfo();
-    //         response.GameInfo = info;
-    //     }
-    // }
+    private static void WriteResponse(Response response, string gameKey, int idPlayer, Dictionary<string, Game> _games)
+    {
+        if (!SeeIfGameExists(gameKey, _games))
+        {
+            response.WasRequestSuccessful = false;
+            response.ErrorMessage = "This game does not exist.";
+        }
+        else if (!SeeIfPlayerIsCurrentPlayer(response, gameKey, idPlayer, _games))
+        {
+            response.WasRequestSuccessful = false;
+            response.ErrorMessage = "You are not the current player.";
+        }
+    }
 }
